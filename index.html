@@ -1,71 +1,305 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJ72C4KPK3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Modern Portfolio</title>
+<style>
+:root {
+    --primary-color: #6c63ff; /* Trendy purple */
+    --text-color: #ffffff;
+    --background-color: #333;
+}
+body, html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+.container {
+    max-width: 1200px;
+    margin: auto;
+padding: 15px 30px;
+}
 
-  gtag('config', 'G-RJ72C4KPK3');
-</script>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, viewport-fit=cover">
-	<meta name="apple-mobile-web-app-capable" content="yes" />
+header {
+    background: var(--primary-color);
+    color: var(--text-color);
+    padding: 20px 0;
+    transition: all 0.3s ease; /* Animation douce pour le changement de taille */
+    width: 100%;
+    height: 100%; /* Prend toute la hauteur de la fenêtre de visualisation */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centre le contenu verticalement et horizontalement */
+}
 
-	<!-- Page Title -->
-	<title>Thiméo Nguyen</title>
+/* Classe CSS à ajouter après le défilement */
+.header-scrolled {
+    height: auto; /* Hauteur automatique ou hauteur spécifique après défilement */
+    padding: 10px 0; /* Réduit le padding */
+}
+header h1 {
+    text-align: center;
+    margin: 0;
+}
+/* Centrer les titres des sections */
+.section h2 {
+    text-align: center;
+    /* Autres styles de titre si nécessaire, par exemple : */
+    margin-top: 0;
+    padding-top: 20px; /* Ajustez selon l'espace souhaité au-dessus du titre */
+}
+.project-item {
+    margin-bottom: 50px; /* Ou toute autre valeur pour créer de l'espace entre les projets */
+    /* autres styles pour '.project-item' si nécessaire */
+}
+nav {
+    display: flex;
+    justify-content: center;
+    background: #333;
+    padding: 10px 0;
+text-align: center;
+}
 
-	<!-- Compressed Styles -->
-	<link href="css/slides.min.css?41331" rel="stylesheet" type="text/css">
+nav a {
+    color: var(--text-color);
+    margin: 0 15px;
+    text-decoration: none;
+    transition: transform 0.3s ease, text-decoration 0.3s ease;
+text-align: center;
+}
 
-	<!-- Custom Styles -->
-	<!-- <link href="css/custom.css" rel="stylesheet" type="text/css"> -->
+nav a:hover, nav a:focus {
+    transform: scale(1.1);
+    color: var(--primary-color);
+}
+.section {
+    display: flex; /* Utiliser flex pour garder les éléments côte à côte */
+    justify-content: center; /* Centrer les éléments */
+    align-items: center; /* Centrer verticalement */
+    padding: 20px 0;
+    text-align: center;
+    background-color: #333;
+    color: var(--text-color);
+    text-align: left;
 
-	<!-- jQuery 3.3.1 -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+}
 
-	<!-- Compressed Scripts -->
-	<script src="js/slides.min.js?41331" type="text/javascript"></script>
+.footer {
+    background: #333;
+    color: var(--text-color);
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+}
+.about-me, .projects {
+    padding: 20px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+    width: 50%; /* Définir une largeur fixe pour conserver les éléments côte à côte */
+border-radius: 15px;
+}
 
-	<!-- Custom Scripts -->
-	<!-- <script src="js/custom.js" type="text/javascript"></script> -->
+@media (max-width: 600px) {
+    .about-me, .projects {
+        width: 100%; /* Empiler les éléments sur des écrans plus petits */
+    }
+}
+.contact-button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+.project-item p {
+    overflow: auto; /* Ajoute une barre de défilement si le contenu déborde */
+}
+.projects {
+    max-width: 100%; /* Assure que le conteneur ne dépasse pas la largeur de l'écran */
+}
+footer {
+    background-color: var(--primary-color); /* Couleur de fond */
+    color: var(--text-color); /* Couleur du texte */
+    text-align: center; /* Centre le contenu */
+    padding: 20px 0; /* Ajoute de l'espace autour du contenu */
+}
 
-	<!-- Fonts and Material Icons -->
-	<link rel="stylesheet" as="font" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,600,700|Material+Icons"/>
- 
+footer a {
+    color: var(--text-color); /* Couleur des liens */
+    text-decoration: none; /* Enlève le soulignement des liens */
+}
+
+footer a:hover {
+    text-decoration: underline; /* Souligne les liens au survol */
+}
+
+body, html {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1; /* Permet au conteneur de prendre tout l'espace disponible */
+}
+</style>
+
 </head>
-<body class="slides chain simplifiedMobile animated">
+<body>
 
-<!-- Navigation -->
-<nav class="side pole">
-  <div class="navigation">
-    <ul></ul>
-  </div>
-</nav>
+<!-- Bouton Retour en Haut -->
+<a href="#" id="toTopBtn" style="position: fixed; bottom: 20px; right: 30px; display: none; z-index: 99; border: none; outline: none; background-color: red; color: white; cursor: pointer; padding: 15px; border-radius: 10px;">↑</a>
 
-<!-- Slide 1 (#10) -->
-<section class="slide fade-6 kenBurns">
-  <div class="content">
+<header>
     <div class="container">
-      <div class="wrap">
-      
-        <div class="fix-7-12">
-          <h1 class="ae-1">Thiméo Nguyen</h1>
-          <p class="ae-2"><span class="opacity-8"> Coming soon</span></p>
-		<p>  <a href="https://www.thimeonguyen.com/contact" ><u>Contact<u></u></a> </p>
-        </div>  
-        
-      </div>
+        <h1>Your Modern Portfolio</h1>
     </div>
-  </div>
-  <div class="background" style="background-image:url(assets/img/background/thimeo.JPG)"></div>
-</section>
+</header>
+<!-- Barre de navigation ajustée -->
+<nav>
+    <div class="container">
+        <a href="#about">About Me</a>
+        <a href="#projects">Projects</a>
+        <!-- Modification ici pour le lien Contact -->
+        <a href="https://thimeonguyen.com/contact" id="contactLink">Contact</a>
+    </div>
 </nav>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('contactLink').addEventListener('click', function(e) {
+        e.preventDefault(); // Empêche l'action par défaut du lien
+        var win = window.open('https://thimeonguyen.com/contact', '_blank');
+        win.focus(); // Tente de mettre le focus sur le nouvel onglet
+    });
+});
+</script>
 
-<!-- Loading Progress Bar -->
-<div class="progress-bar blue"></div>
-		
+
+
+
+<div class="container-flex">
+<div class="section" id="about">
+    <div class="about-me">
+        <h2>About Me</h2>
+        <p>This is a brief section about you. Include your background, interests, and whatever else you wish to share.</p>
+    </div>
+</div>
+
+
+	<div class="section" id="projects">
+   	 <div class="projects">
+      	  <h2>Projects</h2>
+       	 <div class="project-item">
+         	   <h3>Escape</h3>
+            	<p>Realisatiom dune fausse bande annonce</p>
+            	<p></p>
+
+       	 </div>
+       	 <div class="project-item">
+       	     <h3>Nom du Projet 2</h3>
+       	     <p>Sous-titre ou description courte du projet</p>
+         	   <p>Si vous ne souhaitez pas de cassure de mot dans votre texte pour garder les mots entiers sans les couper, mais voulez quand même que le texte soit responsive et ne dépasse pas de l'écran, vous pouvez essayer les approches suivantes :
+
+### 1. Utilisation de `overflow-wrap`
+
+Bien que vous ne souhaitiez pas casser les mots, vous pouvez définir `overflow-wrap` à `normal` pour éviter la cassure. Cependant, cela pourrait ne pas résoudre le problème si les mots sont trop longs pour la ligne.
+
+### 2. Empêcher le Débordement avec `overflow`
+
+Pour gérer les cas où le texte est trop long pour être contenu dans son élément parent sans casser les mots, vous pouvez utiliser `overflow` pour ajouter une barre de défilement ou masquer le texte débordant :
+
+```css
+.project-item p {
+    overflow: auto; /* Ajoute une barre de défilement si le contenu déborde */
+}
+```
+
+Ou, pour masquer le contenu débordant :
+
+```css
+.project-item p {
+    overflow: hidden; /* Masque le contenu qui dépasse du conteneur */
+}
+```
+
+### 3. Utilisation de `word-break`
+
+L'utilisation de `word-break: keep-all;` peut empêcher la cassure des mots dans certaines langues (comme le coréen), mais son comportement peut ne pas être ce que vous recherchez en anglais ou dans d'autres langues utilisant des espaces entre les mots.
+
+### 4. Ajustement de la Taille de la Police Dynamiquement
+
+Une autre approche consiste à ajuster la taille de la police en fonction de la largeur de l'écran. Vous pouvez utiliser des unités relatives comme `vw` (viewport width) pour les tailles de police, mais faites attention à ne pas rendre le texte trop petit ou trop grand :
+
+```css
+.project-item p {
+    font-size: calc(14px + 0.5vw); /* Ajuste la taille de la police en fonction de la largeur de l'écran */
+}
+```
+
+### 5. Utilisation des Media Queries
+
+Les media queries sont une méthode puissante pour ajuster le style en fonction de la taille de l'écran. Vous pouvez réduire la taille de la police, ajuster les marges, ou modifier d'autres propriétés CSS pour les écrans plus petits :
+
+```css
+@media (max-width: 600px) {
+    .project-item p {
+        font-size: 14px; /* Réduit la taille de la police pour les petits écrans */
+        padding: 10px; /* Ajuste le padding si nécessaire */
+    }
+}
+```
+
+En combinant ces approches, vous pouvez créer un texte responsive dans la section "Projects" qui reste lisible et esthétiquement agréable sans casser les mots, tout en s'assurant que le contenu s'adapte bien aux différents tailles d'écran.</p>
+       	 </div>
+       	 <!-- Répétez pour d'autres projets -->
+    	</div>
+	</div>
+</div>
+
+<!-- Bouton Contact -->
+<!-- Conteneur pour le bouton avec style en ligne pour le centrage -->
+<div style="text-align: center; margin-top: 20px; margin-bottom: 40px">
+    <a href="https://thimeonguyen.com/contact" target="_blank" style="display: inline-block; background-color: #6c63ff; color: #ffffff; padding: 15px 30px; font-size: 20px; text-decoration: none; border-radius: 5px; transition: background-color 0.3s;">Contact</a>
+</div>
+
+<footer>
+    <div class="container">
+        <p>© 2024 Your Name. All rights reserved.</p>
+        <p>Follow us on:
+            <a href="https://twitter.com/yourtwitter">Twitter</a>,
+            <a href="https://facebook.com/yourfacebook">Facebook</a>,
+            <a href="https://instagram.com/yourinstagram">Instagram</a>
+        </p>
+    </div>
+</footer>
+
+<script>
+    // Gère l'affichage du bouton de retour en haut en fonction du défilement de la page
+    const toTopBtn = document.getElementById("toTopBtn");
+    window.onscroll = function() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            toTopBtn.style.display = "block";
+        } else {
+            toTopBtn.style.display = "none";
+        }
+    };
+
+    // Fonction de retour en haut de la page avec animation douce
+    toTopBtn.addEventListener('click', function() {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+
+    // Animation de défilement fluide pour les liens de navigation
+    document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            targetSection.scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+
+</script>
+
 </body>
 </html>
