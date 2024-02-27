@@ -176,7 +176,7 @@
 </div>
 
 <div class="container">
-    <div class="edit-form">
+    <div class="formId">
         <h2>Ajouter un projet</h2>
         <input type="text" id="project-title" placeholder="Titre du projet" />
         <textarea id="project-description" placeholder="Description du projet"></textarea>
@@ -184,7 +184,7 @@
         <input type="text" id="project-video" placeholder="ID de la vidéo YouTube" />
         <button onclick="addProject()">Ajouter le projet</button>
     </div>
-<button id="downloadButton" onclick="downloadHTML()">Télécharger le HTML</button>
+<button id="downloadButtonId" onclick="downloadHTMLWithoutFormAndButton()">Télécharger le HTML</button>
 </div>
     <!-- Votre contenu HTML ici -->
 
@@ -237,14 +237,27 @@ function addProject() {
 }
 </script>
 <script>
-function downloadHTML() {
-    var filename = 'page-modifiee.html';
-    var htmlContent = [document.documentElement.outerHTML];
-    var blob = new Blob(htmlContent, {type: 'text/html;charset=utf-8'});
+function downloadHTMLWithoutFormAndButton() {
+    // Cloner le document entier
+    var clone = document.documentElement.cloneNode(true);
+
+    // Sélectionner et supprimer le formulaire et le bouton de téléchargement du clone
+    var formToRemove = clone.querySelector("#formId"); // Assurez-vous que le formulaire a un id="formId"
+    if (formToRemove) formToRemove.remove();
+
+    var downloadButtonToRemove = clone.querySelector("#downloadButtonId"); // Assurez-vous que le bouton a un id="downloadButtonId"
+    if (downloadButtonToRemove) downloadButtonToRemove.remove();
+
+    // Convertir le clone modifié en chaîne HTML
+    var htmlContent = clone.outerHTML;
+    var blob = new Blob([htmlContent], {type: 'text/html;charset=utf-8'});
+
+    // Créer un lien pour le téléchargement
     var downloadLink = document.createElement("a");
     downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = filename;
+    downloadLink.download = 'page-modifiee.html';
 
+    // Déclencher le téléchargement
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
