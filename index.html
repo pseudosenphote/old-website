@@ -238,31 +238,16 @@ function addProject() {
 </script>
 <script>
 function downloadHTML() {
-    // Cachez temporairement le bouton et le formulaire
-    document.getElementById('downloadButton').style.display = 'none';
-    document.getElementById('edit-form').style.display = 'none';
-    
-    // Obtenez le HTML de la page
-    var html = document.documentElement.outerHTML;
-    
-    // Réaffichez le bouton et le formulaire
-    document.getElementById('downloadButton').style.display = 'block';
-    document.getElementById('edit-form').style.display = 'block';
-    
-    // Créez un Blob avec le contenu HTML
-    var blob = new Blob([html], {type: 'text/html'});
-    
-    // Créez un lien pour le téléchargement
-    var link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = 'page-modifiee.html';
-    
-    // Simulez un clic sur le lien pour déclencher le téléchargement
-    document.body.appendChild(link);
-    link.click();
-    
-    // Nettoyez en supprimant le lien temporaire
-    document.body.removeChild(link);
+    var filename = 'page-modifiee.html';
+    var htmlContent = [document.documentElement.outerHTML];
+    var blob = new Blob(htmlContent, {type: 'text/html;charset=utf-8'});
+    var downloadLink = document.createElement("a");
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = filename;
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
 }
 </script>
 
