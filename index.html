@@ -65,6 +65,71 @@
     height: 100%;
 }
 
+.formId {
+    background-color: #444; /* Couleur de fond */
+    padding: 20px; /* Espacement intérieur */
+    border-radius: 5px; /* Bords arrondis */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre portée */
+    margin-bottom: 20px; /* Espacement en dessous du formulaire */
+}
+
+.formId input[type="text"],
+.formId textarea {
+    width: 100%; /* Largeur complète */
+    padding: 10px; /* Espacement intérieur */
+    margin: 10px 0; /* Espacement extérieur */
+    display: inline-block; /* Assure que les éléments sont alignés correctement */
+    border: 1px solid #ccc; /* Bordure */
+    border-radius: 4px; /* Bords arrondis */
+    box-sizing: border-box; /* La largeur et la hauteur incluent le padding et la bordure */
+}
+
+.formId button {
+    width: 50%; /* Largeur complète */
+    background-color: var(--primary-color); /* Couleur de fond */
+    color: white; /* Couleur du texte */
+    padding: 14px 20px; /* Espacement intérieur */
+    margin: 8px 0; /* Espacement extérieur */
+    border: none; /* Pas de bordure */
+    border-radius: 4px; /* Bords arrondis */
+    cursor: pointer; /* Change le curseur */
+	text-align: center;
+	margin: 20px auto;
+	display: block; /* Affichage en bloc */
+}
+
+
+
+#downloadButtonId {
+    background-color: green; /* Couleur de fond */
+    color: white; /* Couleur du texte */
+    padding: 12px 20px; /* Espacement intérieur */
+    border: none; /* Pas de bordure */
+    border-radius: 4px; /* Bords arrondis */
+    cursor: pointer; /* Change le curseur */
+    text-align: center; /* Texte centré */
+    display: block; /* Affichage en bloc */
+    margin: 20px auto; /* Centrage horizontal */
+    width: 200px; /* Largeur fixe */
+}
+
+#downloadButtonId:hover {
+    background-color: grey; /* Couleur de fond au survol */
+}
+
+/* Style pour les projets en mode édition */
+.editable {
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+
+.selected {
+    border: 2px solid violet; /* Ajoute une bordure violette pour les éléments sélectionnés */
+    background-color: #f0f0f0; /* Légère coloration de fond pour indiquer la sélection */
+	transform: scale(1.03); /* Effet de légère mise en évidence */
+}
+
 /* Le reste de votre CSS reste inchangé */
 
 
@@ -175,42 +240,158 @@
     </div>
 </div>
 
-<div class="container">
+<div class="container" id="deletefb">
     <div class="formId">
-        <h2>Ajouter un projet</h2>
         <input type="text" id="project-title" placeholder="Titre du projet" />
         <textarea id="project-description" placeholder="Description du projet"></textarea>
         <input type="text" id="project-image" placeholder="URL de l'image du projet" />
         <input type="text" id="project-video" placeholder="ID de la vidéo YouTube" />
         <button onclick="addProject()">Ajouter le projet</button>
     </div>
+<button id="editModeButton">Activer le Mode Édition</button>
+<button id="deleteSelectedButton">Supprimer les éléments sélectionnés</button>
 <button id="downloadButtonId" onclick="downloadHTMLWithoutFormAndButton()">Télécharger le HTML</button>
 </div>
     <!-- Votre contenu HTML ici -->
 
+
 <script>
+document.addEventListener("DOMContentLoaded", function() {
+    let isEditMode = false; // Indicateur du mode édition
+    let selectedElements = []; // Stocke les éléments sélectionnés
+
+    // Fonction pour basculer le mode édition
+    const toggleEditMode = () => {
+        isEditMode = !isEditMode;
+        document.getElementById('editModeButton').innerText = isEditMode ? 'Désactiver le Mode Édition' : 'Activer le Mode Édition';
+
+        if (isEditMode) {
+            // Activer le mode édition
+            addIframeSelectionCheckboxes();
+        } else {
+            // Désactiver le mode édition
+            removeIframeSelectionCheckboxes();
+            clearSelections();
+        }
+    };
+
+    // Ajoute une coche de sélection pour chaque iframe
+    const addIframeSelectionCheckboxes = () => {
+        document.querySelectorAll('#projects iframe, #about iframe').forEach(iframe => {
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'selection-checkbox';
+            checkbox.style.position = 'absolute';
+            checkbox.style.left = '-50px'; // Ajuster selon le besoin
+            checkbox.style.top = '0';
+            checkbox.setAttribute('data-for', 'iframe');
+
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    iframe.classList.add('selected');
+                    selectedElements.push(iframe);
+                } else {
+                    iframe.classList.remove('selected');
+                    const index = selectedElements.indexOf(iframe);
+                    if (index > -1) {
+                        selectedElements.splice(index, 1);
+                    }
+                }
+            });
+
+            // Positionnement par rapport au parent si celui-ci n'est pas déjà positionné
+            if (getComputedStyle(iframe.parentNode).position === 'static') {
+                iframe.parentNode.style.position = 'relative';
+            }
+
+            iframe.before(checkbox);
+        });
+    };
+
+    // Supprime les coches de sélection pour les iframes
+    const removeIframeSelectionCheckboxes = () => {
+        document.querySelectorAll('.selection-checkbox[data-for="iframe"]').forEach(checkbox => {
+            checkbox.remove();
+        });
+    };
+
+    // Gère les clics pour la sélection normale en mode édition
+    const editModeClickHandler = (event) => {
+        if (isEditMode && !event.target.matches('.selection-checkbox')) {
+            const target = event.target;
+            const targetInProjectsOrAbout = target.closest('#projects, #about') && !target.closest('#projects, #about').isSameNode(target);
+
+            if (targetInProjectsOrAbout) {
+                event.preventDefault();
+                toggleElementSelection(target);
+            }
+        }
+    };
+
+    // Active ou désactive la sélection visuelle d'un élément
+    const toggleElementSelection = (element) => {
+        if (element.classList.contains('selected')) {
+            element.classList.remove('selected');
+            const index = selectedElements.indexOf(element);
+            if (index > -1) {
+                selectedElements.splice(index, 1);
+            }
+        } else {
+            element.classList.add('selected');
+            selectedElements.push(element);
+        }
+    };
+
+    // Supprime tous les éléments sélectionnés
+    const deleteSelectedElements = () => {
+        selectedElements.forEach(element => element.remove());
+        selectedElements = [];
+    };
+
+    // Nettoie les sélections
+    const clearSelections = () => {
+        selectedElements.forEach(element => element.classList.remove('selected'));
+        selectedElements = [];
+    };
+
+    document.addEventListener('click', editModeClickHandler, true);
+    document.getElementById('editModeButton').addEventListener('click', toggleEditMode);
+    document.getElementById('deleteSelectedButton').addEventListener('click', deleteSelectedElements);
+});
+
+function downloadHTMLWithoutFormAndButton() {
+    var clone = document.documentElement.cloneNode(true);
+    var formToRemove = clone.querySelector("#deletefb");
+    if (formToRemove) {
+        formToRemove.remove();
+    }
+    var doctype = document.doctype;
+    var doctypeString = new XMLSerializer().serializeToString(doctype);
+    var outerHTML = clone.outerHTML;
+    var fullHTML = doctypeString + '\n' + outerHTML;
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(fullHTML));
+    element.setAttribute('download', "page.html");
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
 
 function addProject() {
-    // Récupérer les valeurs du formulaire
     var title = document.getElementById('project-title').value;
     var description = document.getElementById('project-description').value;
     var imageUrl = document.getElementById('project-image').value;
     var videoId = document.getElementById('project-video').value;
-
-    // Créer les éléments HTML pour le nouveau projet
     var projectDiv = document.createElement('div');
     projectDiv.classList.add('project');
-
     var projectTitle = document.createElement('h3');
     projectTitle.innerText = title;
-
     var projectDescription = document.createElement('p');
     projectDescription.innerText = description;
-
     var projectImage = new Image();
     projectImage.src = imageUrl;
     projectImage.classList.add('responsive-image');
-
     var projectVideoContainer = document.createElement('div');
     projectVideoContainer.classList.add('youtube-video-container');
     var projectVideo = document.createElement('iframe');
@@ -219,50 +400,30 @@ function addProject() {
     projectVideo.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
     projectVideo.setAttribute('allowfullscreen', 'true');
     projectVideoContainer.appendChild(projectVideo);
-
-    // Assembler le projet
     projectDiv.appendChild(projectTitle);
     projectDiv.appendChild(projectDescription);
     if (imageUrl) projectDiv.appendChild(projectImage);
     if (videoId) projectDiv.appendChild(projectVideoContainer);
-
-    // Ajouter le nouveau projet à la section des projets
     document.querySelector('.projects').appendChild(projectDiv);
-
-    // Optionnel: Réinitialiser les champs du formulaire
     document.getElementById('project-title').value = '';
     document.getElementById('project-description').value = '';
     document.getElementById('project-image').value = '';
     document.getElementById('project-video').value = '';
+
+    // Gestion de l'indicateur de chargement et succès
+    const button = document.querySelector('.formId button');
+    const originalText = button.innerText;
+    button.innerText = "..."; // Affichage des points de suspension pendant le chargement
+    setTimeout(() => {
+        button.innerText = 'Ajouté ✅';
+        setTimeout(() => {
+            button.innerText = originalText;
+        }, 2000); // Retour au texte original après 2 secondes
+    }, 200); // Durée d'affichage des points de suspension
 }
 </script>
-<script>
-function downloadHTMLWithoutFormAndButton() {
-    // Cloner le document entier
-    var clone = document.documentElement.cloneNode(true);
 
-    // Sélectionner et supprimer le formulaire et le bouton de téléchargement du clone
-    var formToRemove = clone.querySelector("#formId"); // Assurez-vous que le formulaire a un id="formId"
-    if (formToRemove) formToRemove.remove();
 
-    var downloadButtonToRemove = clone.querySelector("#downloadButtonId"); // Assurez-vous que le bouton a un id="downloadButtonId"
-    if (downloadButtonToRemove) downloadButtonToRemove.remove();
-
-    // Convertir le clone modifié en chaîne HTML
-    var htmlContent = clone.outerHTML;
-    var blob = new Blob([htmlContent], {type: 'text/html;charset=utf-8'});
-
-    // Créer un lien pour le téléchargement
-    var downloadLink = document.createElement("a");
-    downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = 'page-modifiee.html';
-
-    // Déclencher le téléchargement
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-}
-</script>
 
 <footer>
     <p>© 2024 Thiméo Nguyen. All rights reserved.</p>
