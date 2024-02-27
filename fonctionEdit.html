@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<div class="container" id="deletefb">
+    <div class="formId">
+        <input type="text" id="project-title" placeholder="Titre du projet" />
+        <textarea id="project-description" placeholder="Description du projet"></textarea>
+        <input type="text" id="project-image" placeholder="URL de l'image du projet" />
+        <input type="text" id="project-video" placeholder="ID de la vidéo YouTube" />
+        <button onclick="addProject()">Ajouter le projet</button>
+    </div>
+<div id="fixedControls">
+  <button id="editModeButton">Activer le Mode Édition</button>
+  <button id="deleteSelectedButton">Supprimer les éléments sélectionnés</button>
+  <button id="editTextButton">Activer l'édition de texte</button>
+</div>
+<button id="downloadButtonId" onclick="downloadHTMLWithoutFormAndButton()">Télécharger le HTML</button>
+</div>
+</body>
+</html>

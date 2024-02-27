@@ -250,22 +250,10 @@
     </div>
 </div>
 
-<div class="container" id="deletefb">
-    <div class="formId">
-        <input type="text" id="project-title" placeholder="Titre du projet" />
-        <textarea id="project-description" placeholder="Description du projet"></textarea>
-        <input type="text" id="project-image" placeholder="URL de l'image du projet" />
-        <input type="text" id="project-video" placeholder="ID de la vidéo YouTube" />
-        <button onclick="addProject()">Ajouter le projet</button>
-    </div>
-<div id="fixedControls">
-  <button id="editModeButton">Activer le Mode Édition</button>
-  <button id="deleteSelectedButton">Supprimer les éléments sélectionnés</button>
-  <button id="editTextButton">Activer l'édition de texte</button>
-</div>
-<button id="downloadButtonId" onclick="downloadHTMLWithoutFormAndButton()">Télécharger le HTML</button>
+<div id="edit">
 </div>
     <!-- Votre contenu HTML ici -->
+
 
 
 <script>
@@ -479,6 +467,14 @@ document.addEventListener("DOMContentLoaded", function() {
     // Ajout du gestionnaire d'événement pour le bouton
     document.getElementById('editTextButton').addEventListener('click', toggleTextEditMode);
 });
+
+fetch('fonctionEdit.html')
+    .then(response => response.text())
+    .then(html => {
+        document.getElementById('edit').innerHTML = html;
+    })
+    .catch(error => console.error('Erreur lors du chargement du fichier:', error));
+
 </script>
 
 
