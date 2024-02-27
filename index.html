@@ -250,6 +250,7 @@
     </div>
 <button id="editModeButton">Activer le Mode Édition</button>
 <button id="deleteSelectedButton">Supprimer les éléments sélectionnés</button>
+<button id="editTextButton">Activer l'édition de texte</button>
 <button id="downloadButtonId" onclick="downloadHTMLWithoutFormAndButton()">Télécharger le HTML</button>
 </div>
     <!-- Votre contenu HTML ici -->
@@ -421,6 +422,51 @@ function addProject() {
         }, 2000); // Retour au texte original après 2 secondes
     }, 200); // Durée d'affichage des points de suspension
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    let isTextEditMode = false; // État initial du mode édition de texte
+
+    // Fonction pour basculer l'état du mode édition de texte
+    const toggleTextEditMode = () => {
+        isTextEditMode = !isTextEditMode; // Bascule l'état
+        const editTextButton = document.getElementById('editTextButton');
+        if (isTextEditMode) {
+            editTextButton.innerText = 'Édition de texte activée'; // Change le texte du bouton
+            enableTextEditing(); // Active l'édition de texte
+        } else {
+            editTextButton.innerText = 'Activer l\'édition de texte'; // Réinitialise le texte du bouton
+            disableTextEditing(); // Désactive l'édition de texte
+        }
+    };
+
+    // Active l'édition de texte pour tous les éléments textuels de la page
+    const enableTextEditing = () => {
+        document.querySelectorAll('body *').forEach(element => {
+            // S'assurer que le bouton d'édition de texte reste cliquable et non éditable
+            if (isTextElement(element) && element.id !== 'editTextButton') {
+                element.setAttribute('contenteditable', 'true');
+            }
+        });
+    };
+
+    // Désactive l'édition de texte
+    const disableTextEditing = () => {
+        document.querySelectorAll('body *').forEach(element => {
+            if (isTextElement(element) && element.id !== 'editTextButton') {
+                element.removeAttribute('contenteditable');
+            }
+        });
+    };
+
+    // Détermine si l'élément est un élément de texte éditable
+    const isTextElement = (element) => {
+        const textTags = ['P', 'SPAN', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'LI', 'TD', 'TH', 'LABEL', 'A', 'DIV'];
+        return textTags.includes(element.tagName) || element.nodeType === Node.TEXT_NODE;
+    };
+
+    // Ajout du gestionnaire d'événement pour le bouton
+    document.getElementById('editTextButton').addEventListener('click', toggleTextEditMode);
+});
 </script>
 
 
