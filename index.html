@@ -189,7 +189,16 @@
         .contact-button:hover {
             background-color: darken(var(--primary-color), 10%);
         }
-
+#fixedControls {
+  position: fixed; /* Rend le conteneur fixe à l'écran */
+  bottom: 20px; /* Distance du bas de la page */
+  right: 20px; /* Distance du côté droit de la page */
+  z-index: 1000; /* S'assure que le conteneur reste au-dessus des autres éléments de la page */
+  background-color: white; /* Couleur de fond (ajustable selon vos préférences) */
+  border-radius: 8px; /* Bordures arrondies pour l'esthétique */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Ombre portée pour un effet de profondeur */
+  padding: 10px; /* Espacement interne autour des boutons */
+}
 
 
 
@@ -209,7 +218,7 @@
         <a href="#about">About Me</a>
         <a href="#projects">Projets</a>
 
-    <a href="https://thimeonguyen.com/contact" class="contact-button">Contact</a>
+     <a href="https://thimeonguyen.com/contact" class="contact-button">Contact</a>
 </nav>
 
 <div class="container">
@@ -235,7 +244,8 @@
     </section>
 
     <!-- Bouton de contact ajusté -->
-    <div style="text-align: center; margin: 40px 0;">
+
+    <div style="text-align: center; margin: 20px 0;">
         <a href="https://thimeonguyen.com/contact" class="contact-button">Contact</a>
     </div>
 </div>
@@ -248,9 +258,11 @@
         <input type="text" id="project-video" placeholder="ID de la vidéo YouTube" />
         <button onclick="addProject()">Ajouter le projet</button>
     </div>
-<button id="editModeButton">Activer le Mode Édition</button>
-<button id="deleteSelectedButton">Supprimer les éléments sélectionnés</button>
-<button id="editTextButton">Activer l'édition de texte</button>
+<div id="fixedControls">
+  <button id="editModeButton">Activer le Mode Édition</button>
+  <button id="deleteSelectedButton">Supprimer les éléments sélectionnés</button>
+  <button id="editTextButton">Activer l'édition de texte</button>
+</div>
 <button id="downloadButtonId" onclick="downloadHTMLWithoutFormAndButton()">Télécharger le HTML</button>
 </div>
     <!-- Votre contenu HTML ici -->
