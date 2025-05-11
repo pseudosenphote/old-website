@@ -1,20 +1,1142 @@
 <!DOCTYPE html>
-
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Réalisateur - [Votre Nom] - Correction Bordure Overlay</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #121212;
+            --secondary-color: #1e1e1e;
+            --accent-color: #f39c12; 
+            --text-color: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --border-color: #333333;
+            --font-primary: 'Montserrat', sans-serif;
+            --font-secondary: 'Playfair Display', serif;
+            --shadow-light: rgba(0,0,0,0.2);
+            --shadow-medium: rgba(0,0,0,0.4);
+            --shadow-dark: rgba(0,0,0,0.6);
+            --button-border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 25px;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: rgba(18, 18, 18, 0.85);
+            backdrop-filter: blur(10px);
+            color: var(--text-color);
+            padding: 1.2rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        nav.scrolled {
+            background-color: rgba(25, 25, 25, 0.95);
+            box-shadow: 0 4px 15px var(--shadow-medium);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-family: var(--font-secondary);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding-bottom: 5px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+        nav ul li a:hover, nav ul li a.active {
+            color: var(--accent-color);
+        }
+        nav ul li a:hover::after, nav ul li a.active::after {
+            width: 100%;
+        }
+        
+        .nav-toggle {
+            display: none;
+            font-size: 1.8rem;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        /* Sections */
+        section {
+            padding: 120px 0;
+            min-height: 80vh;
+            overflow: hidden;
+        }
+        
+        .section-title {
+            font-family: var(--font-secondary);
+            font-size: 3.2rem;
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            font-weight: 700;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Accueil */
+        #accueil {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1505682499293-230dd9df66e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmlsbW1ha2luZ3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=1200&q=70') no-repeat center center/cover;
+            position: relative;
+        }
+
+        #accueil h1 {
+            font-family: var(--font-secondary);
+            font-size: 4.5rem;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        #accueil p.subtitle {
+            font-size: 1.6rem;
+            color: var(--text-color);
+            max-width: 750px;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            padding: 14px 30px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: var(--button-border-radius);
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            border: 2px solid var(--accent-color);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .cta-button:hover {
+            background-color: transparent;
+            color: var(--accent-color);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
+        }
+
+        .scroll-down-arrow {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            color: var(--text-color);
+            animation: bounce 2s infinite;
+        }
+        .scroll-down-arrow a { color: inherit; text-decoration: none; }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-15px); }
+            60% { transform: translateX(-50%) translateY(-7px); }
+        }
+
+        /* Projets */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+        }
+
+        .project-item {
+            background-color: var(--secondary-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px var(--shadow-light);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .project-item-media {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background-color: #111;
+        }
+
+        .project-item img.thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .project-item-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(18,18,18,0.98) 0%, rgba(18,18,18,0.7) 60%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 25px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            text-align: center;
+            border-radius: inherit; /* <<< CORRECTION ICI */
+        }
+        .project-item-overlay h3 {
+            font-family: var(--font-secondary);
+            color: #fff;
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            transform: translateY(20px);
+            transition: transform 0.4s ease 0.1s, opacity 0.4s ease 0.1s;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+        }
+        .project-item-overlay h3 .project-type-icon {
+            font-size: 1.2rem;
+            margin-left: 10px;
+            opacity: 0.7;
+        }
+        .project-item-overlay .overlay-category {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            transform: translateY(20px);
+            transition: transform 0.4s ease 0.15s, opacity 0.4s ease 0.15s;
+            opacity: 0;
+        }
+        .project-item-overlay .overlay-cta {
+            color: var(--accent-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transform: translateY(20px);
+            transition: transform 0.4s ease 0.2s, opacity 0.4s ease 0.2s;
+            opacity: 0;
+            display: inline-flex;
+            align-items: center;
+        }
+        .project-item-overlay .overlay-cta i {
+            margin-left: 8px;
+        }
+
+        .project-item:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 15px 35px var(--shadow-medium);
+        }
+        .project-item:hover .project-item-media img.thumbnail {
+            transform: scale(1.1);
+        }
+        .project-item:hover .project-item-overlay {
+            opacity: 1;
+        }
+        .project-item:hover .project-item-overlay h3,
+        .project-item:hover .project-item-overlay .overlay-category,
+        .project-item:hover .project-item-overlay .overlay-cta {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* CV */
+        #cv .cv-content {
+            max-width: 850px;
+            margin: 0 auto;
+            background-color: var(--secondary-color);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px var(--shadow-medium);
+        }
+        #cv h3.cv-section-title {
+            font-family: var(--font-secondary);
+            color: var(--accent-color);
+            font-size: 2rem;
+            margin-top: 35px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            font-weight: 700;
+        }
+        #cv ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        #cv ul li.cv-item {
+            margin-bottom: 25px;
+            padding-left: 25px;
+            position: relative;
+        }
+        #cv ul li.cv-item::before {
+            content: '•'; 
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        #cv .cv-item strong {
+            color: var(--text-color);
+            display: block;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+        #cv .cv-item span.meta {
+            font-style: italic;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 8px;
+        }
+        #cv .cv-item p.description {
+            font-size: 0.95rem;
+            color: var(--text-color);
+        }
+        
+        #cv .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding-left: 0;
+        }
+        #cv .skills-list li {
+            background-color: var(--primary-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
+        }
+        #cv .skills-list li i {
+            margin-right: 8px;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+        }
+        #cv .skills-list li::before { display: none; }
 
 
+        #cv .download-cv {
+            display: block;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        /* Contact */
+        #contact {
+            text-align: center;
+            background-color: var(--secondary-color);
+        }
+        #contact p.contact-intro {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #contact .email-link {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--accent-color);
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 40px;
+            padding: 10px 20px;
+            border: 2px solid transparent;
+            border-radius: var(--button-border-radius);
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+        #contact .email-link:hover {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+        .social-links a {
+            color: var(--text-muted);
+            font-size: 2.2rem;
+            margin: 0 18px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .social-links a:hover {
+            color: var(--accent-color);
+            transform: translateY(-5px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            background-color: var(--primary-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(10,10,10,0.95);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: var(--secondary-color);
+            margin: auto;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            width: 90%;
+            max-width: 950px;
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 15px 40px var(--shadow-dark);
+            animation: modalOpen 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        @keyframes modalOpen {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .modal-header h2 {
+            font-family: var(--font-secondary);
+            color: var(--accent-color);
+            font-size: 2rem;
+        }
+
+        .close-button {
+            color: var(--text-muted);
+            font-size: 32px;
+            font-weight: bold;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--accent-color);
+            text-decoration: none;
+            cursor: pointer;
+            transform: rotate(90deg);
+        }
+
+        .modal-body .vimeo-embed-container {
+            position: relative;
+            padding-bottom: 56.25%; 
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .modal-body .vimeo-embed-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .modal-body img {
+            width: 100%;
+            max-height: 75vh;
+            object-fit: contain;
+            display: block;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .modal-body p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-color);
+        }
+
+        /* Animation à l'apparition */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .projects-grid .project-item.reveal {
+            transition-delay: calc(0.1s * var(--item-index, 0));
+        }
+
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .section-title { font-size: 2.8rem; }
+            #accueil h1 { font-size: 3.5rem; }
+            #accueil p.subtitle { font-size: 1.4rem; }
+        }
+
+        @media (max-width: 768px) {
+            html { font-size: 15px; }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: rgba(25, 25, 25, 0.98);
+                position: absolute;
+                top: 100%; 
+                left: 0;
+                padding: 1rem 0;
+                box-shadow: 0 5px 10px var(--shadow-medium);
+            }
+            nav ul.active {
+                display: flex;
+            }
+            nav ul li {
+                margin: 12px 0;
+                text-align: center;
+            }
+            .nav-toggle {
+                display: block;
+            }
+
+            #accueil h1 { font-size: 2.8rem; }
+            #accueil p.subtitle { font-size: 1.2rem; }
+            .section-title { font-size: 2.4rem; }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            .project-item:hover {
+                transform: translateY(-8px);
+            }
+            .project-item-overlay h3 { font-size: 1.5rem; }
+
+
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+            .modal-header h2 { font-size: 1.6rem; }
+            #cv .cv-content { padding: 25px; }
+            #cv h3.cv-section-title { font-size: 1.8rem; }
+        }
+         @media (max-width: 480px) {
+            html { font-size: 14px; }
+            .container { padding: 0 15px; }
+            #accueil h1 { font-size: 2.2rem; }
+            #accueil p.subtitle { font-size: 1.1rem; }
+            .cta-button { padding: 12px 25px; font-size: 0.9rem; }
+            .section-title { font-size: 2rem; }
+            .project-item-overlay h3 { font-size: 1.3rem; }
+            .project-item-overlay .overlay-category,
+            .project-item-overlay .overlay-cta { font-size: 0.8rem; }
+         }
+    </style>
 </head>
 <body>
-<div id="externalContent"></div>
-<script>
-    fetch('https://raw.githubusercontent.com/pseudosenphote/edit/main/index.html')
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById('externalContent').innerHTML = data;
-    })
-    .catch(error => console.error('Erreur lors du chargement du fichier:', error));
-</script>
+
+    <nav id="navbar">
+        <div class="container">
+            <a href="#accueil" class="logo">[Votre Nom]</a>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul id="nav-menu">
+                <li><a href="#accueil" class="nav-link">Accueil</a></li>
+                <li><a href="#projets" class="nav-link">Projets</a></li>
+                <li><a href="#cv" class="nav-link">CV</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="accueil">
+        <div class="container reveal">
+            <h1>[Votre Nom]</h1>
+            <p class="subtitle">Réalisateur passionné, transformant des visions en récits cinématographiques captivants. Explorez mon univers.</p>
+            <a href="#projets" class="cta-button">Découvrir mes projets</a>
+        </div>
+        <div class="scroll-down-arrow">
+            <a href="#projets" aria-label="Scroll to projects"><i class="fas fa-chevron-down"></i></a>
+        </div>
+    </section>
+
+    <section id="projets">
+        <div class="container">
+            <h2 class="section-title reveal">Mes Projets</h2>
+            <div class="projects-grid">
+<!-- Projet (Vimeo) -->
+                <div class="project-item reveal" 
+                     data-type="vimeo" 
+                     data-vimeo-id="cac" 
+                     data-title="cac" 
+                     data-description="caca">
+                    <div class="project-item-media">
+                        <img src="caca" alt="caca" class="thumbnail">
+                    </div>
+                    <div class="project-item-overlay">
+                        <h3>caca <i class="fab fa-vimeo-v project-type-icon"></i></h3>
+                        <p class="overlay-category">caca</p>
+                        <span class="overlay-cta">Voir le projet <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+<!-- Projet (Vimeo) -->
+                <div class="project-item reveal" 
+                     data-type="vimeo" 
+                     data-vimeo-id="000000000" 
+                     data-title="Type: Nouveau Projet Testgjh" 
+                     data-description="Description de ce nouveau projet test.ztui">
+                    <div class="project-item-media">
+                        <img src="https://via.placeholder.com/640x360.png?text=Miniature" alt="Nouveau Projet Testfzgu" class="thumbnail">
+                    </div>
+                    <div class="project-item-overlay">
+                        <h3>Nouveau Projet Testfzgu <i class="fab fa-vimeo-v project-type-icon"></i></h3>
+                        <p class="overlay-category">Catégorie - Rôleghjk</p>
+                        <span class="overlay-cta">Voir le projet <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+<!-- Projet (Vimeo) -->
+                <div class="project-item reveal" 
+                     data-type="vimeo" 
+                     data-vimeo-id="000000000" 
+                     data-title="Type: Nouveau Projet Testgjh" 
+                     data-description="Description de ce nouveau projet test.ztui">
+                    <div class="project-item-media">
+                        <img src="https://via.placeholder.com/640x360.png?text=Miniature" alt="Nouveau Projet Testfzgu" class="thumbnail">
+                    </div>
+                    <div class="project-item-overlay">
+                        <h3>Nouveau Projet Testfzgu <i class="fab fa-vimeo-v project-type-icon"></i></h3>
+                        <p class="overlay-category">Catégorie - Rôleghjk</p>
+                        <span class="overlay-cta">Voir le projet <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+<!-- Projet (Vimeo) -->
+                <div class="project-item reveal" 
+                     data-type="vimeo" 
+                     data-vimeo-id="000000000" 
+                     data-title="Type: Nouveau Projet Testgjh" 
+                     data-description="Description de ce nouveau projet test.ztui">
+                    <div class="project-item-media">
+                        <img src="https://via.placeholder.com/640x360.png?text=Miniature" alt="Nouveau Projet Testfzgu" class="thumbnail">
+                    </div>
+                    <div class="project-item-overlay">
+                        <h3>Nouveau Projet Testfzgu <i class="fab fa-vimeo-v project-type-icon"></i></h3>
+                        <p class="overlay-category">Catégorie - Rôleghjk</p>
+                        <span class="overlay-cta">Voir le projet <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+<!-- Projet (Vimeo) -->
+                <div class="project-item reveal" 
+                     data-type="vimeo" 
+                     data-vimeo-id="000000000" 
+                     data-title="Type: Nouveau Projet Testgjh" 
+                     data-description="Description de ce nouveau projet test.ztui">
+                    <div class="project-item-media">
+                        <img src="https://via.placeholder.com/640x360.png?text=Miniature" alt="Nouveau Projet Testfzgu" class="thumbnail">
+                    </div>
+                    <div class="project-item-overlay">
+                        <h3>Nouveau Projet Testfzgu <i class="fab fa-vimeo-v project-type-icon"></i></h3>
+                        <p class="overlay-category">Catégorie - Rôleghjk</p>
+                        <span class="overlay-cta">Voir le projet <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+<!-- Projet (Vimeo) -->
+                <div class="project-item reveal" 
+                     data-type="vimeo" 
+                     data-vimeo-id="000000000" 
+                     data-title="Type: Nouveau Projet Testgjh" 
+                     data-description="Description de ce nouveau projet test.ztui">
+                    <div class="project-item-media">
+                        <img src="https://via.placeholder.com/640x360.png?text=Miniature" alt="Nouveau Projet Testfzgu" class="thumbnail">
+                    </div>
+                    <div class="project-item-overlay">
+                        <h3>Nouveau Projet Testfzgu <i class="fab fa-vimeo-v project-type-icon"></i></h3>
+                        <p class="overlay-category">Catégorie - Rôleghjk</p>
+                        <span class="overlay-cta">Voir le projet <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+<!-- Projet (Vimeo) -->
+                <div class="project-item reveal" 
+                     data-type="vimeo" 
+                     data-vimeo-id="000000000" 
+                     data-title="Type: Nouveau Projet Testgjh" 
+                     data-description="Description de ce nouveau projet test.ztui">
+                    <div class="project-item-media">
+                        <img src="https://via.placeholder.com/640x360.png?text=Miniature" alt="Nouveau Projet Testfzgu" class="thumbnail">
+                    </div>
+                    <div class="project-item-overlay">
+                        <h3>Nouveau Projet Testfzgu <i class="fab fa-vimeo-v project-type-icon"></i></h3>
+                        <p class="overlay-category">Catégorie - Rôleghjk</p>
+                        <span class="overlay-cta">Voir le projet <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+<!-- Projet (Vimeo) -->
+                <div class="project-item reveal" 
+                     data-type="vimeo" 
+                     data-vimeo-id="000000000" 
+                     data-title="Type: Nouveau Projet Testgjh" 
+                     data-description="Description de ce nouveau projet test.ztui">
+                    <div class="project-item-media">
+                        <img src="https://via.placeholder.com/640x360.png?text=Miniature" alt="Nouveau Projet Testfzgu" class="thumbnail">
+                    </div>
+                    <div class="project-item-overlay">
+                        <h3>Nouveau Projet Testfzgu <i class="fab fa-vimeo-v project-type-icon"></i></h3>
+                        <p class="overlay-category">Catégorie - Rôleghjk</p>
+                        <span class="overlay-cta">Voir le projet <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+<!-- Projet (Vimeo) -->
+                <div class="project-item reveal" 
+                     data-type="vimeo" 
+                     data-vimeo-id="000000000" 
+                     data-title="Type: Nouveau Projet Testgjh" 
+                     data-description="Description de ce nouveau projet test.ztui">
+                    <div class="project-item-media">
+                        <img src="https://via.placeholder.com/640x360.png?text=Miniature" alt="Nouveau Projet Testfzgu" class="thumbnail">
+                    </div>
+                    <div class="project-item-overlay">
+                        <h3>Nouveau Projet Testfzgu <i class="fab fa-vimeo-v project-type-icon"></i></h3>
+                        <p class="overlay-category">Catégorie - Rôleghjk</p>
+                        <span class="overlay-cta">Voir le projet <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+<!-- Projet (Vimeo) -->
+                <div class="project-item reveal" 
+                     data-type="vimeo" 
+                     data-vimeo-id="000000000" 
+                     data-title="Court Métrage: Le Lac Aux Secrets" 
+                     data-description="Projet réalisé pour le concours carouge.">
+                    <div class="project-item-media">
+                        <img src="https://i.ytimg.com/an_webp/WnKTUusz44E/mqdefault_6s.webp?du=3000&sqp=CPHugcEG&rs=AOn4CLCyt5oMrWKBm_0-p_S7J52XHfF0UA" alt="Le Lac Aux Secrets" class="thumbnail">
+                    </div>
+                    <div class="project-item-overlay">
+                        <h3>Le Lac Aux Secrets <i class="fab fa-vimeo-v project-type-icon"></i></h3>
+                        <p class="overlay-category">Court-Métrage - Real & Montage</p>
+                        <span class="overlay-cta">Voir le projet <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+                <!-- Projet 1 (Vimeo) -->
+                <div class="project-item reveal" 
+                     data-type="vimeo" 
+                     data-vimeo-id="197535359" 
+                     data-title="Court-Métrage: Dawn Of The Cookies" 
+                     data-description="Un court-métrage comique réalisé dans le cadre de mon dossier d'admission à la Toronto Metropolitan University.">
+                    <div class="project-item-media">
+                        <img src="https://i.vimeocdn.com/video/1977714387-4b6d2e705e4b82ccb7c96f5d7d1e23115a1fc23d3e002868443b9a7b8eb0f835-d_640x360?&r=pad&region=us" alt="Dawn Of The Cookies" class="thumbnail">
+                    </div>
+                    <div class="project-item-overlay">
+                        <h3>Dawn Of The Cookies <i class="fab fa-vimeo-v project-type-icon"></i></h3>
+                        <p class="overlay-category">Court-Métrage - Réalisation, Scénario</p>
+                        <span class="overlay-cta">Voir le projet <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+                <!-- Projet 2 (Image) -->
+                <div class="project-item reveal" 
+                     data-type="image" 
+                     data-image-url="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZmlsbSUyMHNldHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
+                     data-title="Clip Musical: Nocturne Urbain (Titre pour Modale)"
+                     data-description="Direction artistique et réalisation pour le clip 'Nocturne Urbain'. Ce projet a mis l'accent sur une esthétique sombre et des jeux de lumière pour capturer l'énergie de la ville la nuit.">
+                    <div class="project-item-media">
+                        <img src="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZmlsbSUyMHNldHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=400&q=60" alt="Nocturne Urbain" class="thumbnail">
+                    </div>
+                    <div class="project-item-overlay">
+                        <h3>Nocturne Urbain <i class="far fa-image project-type-icon"></i></h3>
+                        <p class="overlay-category">Clip Musical - Réalisation, DA</p>
+                        <span class="overlay-cta">Voir le projet <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+                
+                <!-- Projet 3 (Vimeo) -->
+                <div class="project-item reveal" 
+                     data-type="vimeo" 
+                     data-vimeo-id="259411563" 
+                     data-title="Documentaire: Voix Silencieuses (Titre pour Modale)" 
+                     data-description="Un documentaire poignant qui donne la parole à ceux que l'on entend rarement. Tourné sur plusieurs mois, ce film cherche à sensibiliser et à inspirer le changement.">
+                    <div class="project-item-media">
+                        <img src="https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F688850598-a69b8735f3c0add3efa2979f0f7f8207a271a4a8f2138e29a20ce7a1000e795e-d_1280x720&src1=https%3A%2F%2Ff.vimeocdn.com%2Fimages_v6%2Fshare%2Fplay_icon_overlay.png" alt="Voix Silencieuses" class="thumbnail">
+                    </div>
+                    <div class="project-item-overlay">
+                        <h3>Voix Silencieuses <i class="fab fa-vimeo-v project-type-icon"></i></h3>
+                        <p class="overlay-category">Documentaire - Réalisation, Interviews</p>
+                        <span class="overlay-cta">Voir le projet <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+                
+                <!-- Projet 4 (Image) -->
+                <div class="project-item reveal" 
+                     data-type="image" 
+                     data-image-url="https://images.unsplash.com/photo-1604975701397-eff5812f7f98?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGZpbG0lMjBzY2VuZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
+                     data-title="Publicité: L'Artisan du Temps (Titre pour Modale)"
+                     data-description="Conception et réalisation d'un spot publicitaire pour une marque horlogère de luxe. L'objectif était de transmettre l'élégance, la précision et l'héritage de la marque.">
+                     <div class="project-item-media">
+                        <img src="https://images.unsplash.com/photo-1604975701397-eff5812f7f98?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGZpbG0lMjBzY2VuZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=400&q=60" alt="L'Artisan du Temps" class="thumbnail">
+                    </div>
+                    <div class="project-item-overlay">
+                        <h3>L'Artisan du Temps <i class="far fa-image project-type-icon"></i></h3>
+                        <p class="overlay-category">Publicité - Réalisation</p>
+                        <span class="overlay-cta">Voir le projet <i class="fas fa-arrow-right"></i></span>
+                    </div>
+
+                </div>
+                <!-- Projet (Vimeo) -->
+                <div class="project-item reveal" 
+                     data-type="vimeo" 
+                     data-vimeo-id="197535359" 
+                     data-title="Dawnx" 
+                     data-description="Description">
+                    <div class="project-item-media">
+                        <img src="https://i.vimeocdn.com/video/1977714387-4b6d2e705e4b82ccb7c96f5d7d1e23115a1fc23d3e002868443b9a7b8eb0f835-d_640x360?&r=pad®ion=us" alt="Dawn " class="thumbnail">
+                    </div>
+                    <div class="project-item-overlay">
+                        <h3>Dawn  <i class="fab fa-vimeo-v project-type-icon"></i></h3>
+                        <p class="overlay-category">Court-Métrage - Réalisation, Scénario, Montage</p>
+                        <span class="overlay-cta">Voir le projet <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+                <!-- Projet (Vimeo) -->
+                <div class="project-item reveal" 
+                     data-type="vimeo" 
+                     data-vimeo-id="test" 
+                     data-title="ztesticule" 
+                     data-description="fewrb">
+                    <div class="project-item-media">
+                        <img src="https://i.ytimg.com/vi/92oLYclfVKE/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDol-7_JxK6kYuiEe7jt_RxaXaaRA" alt="hellohello" class="thumbnail">
+                    </div>
+                    <div class="project-item-overlay">
+                        <h3>hellohello <i class="fab fa-vimeo-v project-type-icon"></i></h3>
+                        <p class="overlay-category">Courrrt</p>
+                        <span class="overlay-cta">Voir le projet <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="cv">
+        <div class="container">
+            <h2 class="section-title reveal">Mon Parcours</h2>
+            <div class="cv-content reveal">
+                <h3 class="cv-section-title">Expérience Professionnelle</h3>
+                <ul>
+                    <li class="cv-item">
+                        <strong>Réalisateur Freelance</strong>
+                        <span class="meta">Depuis 2018 - Paris, France</span>
+                        <p class="description">Conception, réalisation et post-production de courts-métrages, clips musicaux, documentaires et contenus publicitaires pour divers clients et projets personnels.</p>
+                    </li>
+                    <li class="cv-item">
+                        <strong>Assistant Réalisateur - Studio XYZ</strong>
+                        <span class="meta">2016 - 2018 - Lyon, France</span>
+                        <p class="description">Participation à la préparation et au tournage de plusieurs longs métrages et séries TV. Gestion du plateau, coordination des équipes.</p>
+                    </li>
+                </ul>
+
+                <h3 class="cv-section-title">Formation</h3>
+                <ul>
+                    <li class="cv-item">
+                        <strong>Master en Études Cinématographiques</strong>
+                        <span class="meta">2013 - 2015 - Université Sorbonne Nouvelle</span>
+                    </li>
+                    <li class="cv-item">
+                        <strong>Licence Arts du Spectacle, option Cinéma</strong>
+                        <span class="meta">2010 - 2013 - Université Lumière Lyon 2</span>
+                    </li>
+                </ul>
+
+                <h3 class="cv-section-title">Compétences Clés</h3>
+                <ul class="skills-list">
+                    <li><i class="fas fa-film"></i> Réalisation (Fiction, Docu, Clip)</li>
+                    <li><i class="fas fa-pen-nib"></i> Scénarisation & Storytelling</li>
+                    <li><i class="fas fa-users"></i> Direction d'acteurs</li>
+                    <li><i class="fas fa-tasks"></i> Gestion de projet</li>
+                    <li><i class="fas fa-cut"></i> Adobe Premiere Pro</li>
+                    <li><i class="fas fa-video"></i> Final Cut Pro</li>
+                    <li><i class="fas fa-palette"></i> DaVinci Resolve</li>
+                    <li><i class="fas fa-camera-retro"></i> Équipements de tournage</li>
+                    <li><i class="fas fa-language"></i> Anglais (Courant)</li>
+                </ul>
+                
+                <div class="download-cv">
+                     <a href="path/to/your/cv.pdf" class="cta-button" download>Télécharger mon CV (PDF)</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container reveal">
+            <h2 class="section-title">Contactez-moi</h2>
+            <p class="contact-intro">Intéressé par une collaboration ou pour discuter d'un projet ? N'hésitez pas à me joindre.</p>
+            <a href="mailto:votre.email@example.com" class="email-link">votre.email@example.com</a>
+            <div class="social-links">
+                <a href="#" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="#" target="_blank" aria-label="Vimeo"><i class="fab fa-vimeo-v"></i></a>
+                <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© <span id="currentYear"></span> [Votre Nom]. Tous droits réservés. Site conçu avec passion.</p>
+        </div>
+    </footer>
+
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Titre du Projet</h2>
+                <span class="close-button">×</span>
+            </div>
+            <div class="modal-body">
+                <div id="modalMediaContainer">
+                    <!-- Le contenu (iframe Vimeo ou img) sera injecté ici par JS -->
+                </div>
+                <p id="modalDescription">Description du projet...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('navbar');
+            const navToggle = document.querySelector('.nav-toggle');
+            const navMenu = document.querySelector('#nav-menu');
+            const navLinks = document.querySelectorAll('#nav-menu a');
+            const sections = document.querySelectorAll('section');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+
+                let currentSectionId = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - navbar.offsetHeight - 50) {
+                        currentSectionId = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === currentSectionId) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            if (navToggle && navMenu) {
+                navToggle.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                    const icon = navToggle.querySelector('i');
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-times');
+                });
+
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (navMenu.classList.contains('active')) {
+                            navMenu.classList.remove('active');
+                            navToggle.querySelector('i').classList.replace('fa-times', 'fa-bars');
+                        }
+                    });
+                });
+            }
+            
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // observer.unobserve(entry.target); // Optionnel
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            revealElements.forEach((el, index) => {
+                if (el.closest('.projects-grid')) {
+                    el.style.setProperty('--item-index', index % 3); 
+                }
+                revealObserver.observe(el);
+            });
+
+            const projectItems = document.querySelectorAll('.project-item');
+            const modal = document.getElementById('projectModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMediaContainer = document.getElementById('modalMediaContainer');
+            const modalDescription = document.getElementById('modalDescription');
+            const closeButton = document.querySelector('.close-button');
+
+            projectItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const type = item.dataset.type;
+                    const title = item.dataset.title;
+                    const description = item.dataset.description;
+
+                    modalTitle.textContent = title;
+                    modalDescription.textContent = description;
+                    modalMediaContainer.innerHTML = ''; 
+
+                    if (type === 'vimeo') {
+                        const vimeoId = item.dataset.vimeoId;
+                        const iframeContainer = document.createElement('div');
+                        iframeContainer.classList.add('vimeo-embed-container');
+                        const iframe = document.createElement('iframe');
+                        iframe.src = `https://player.vimeo.com/video/${vimeoId}?autoplay=1&title=0&byline=0&portrait=0&muted=0`;
+                        iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
+                        iframe.setAttribute('allowfullscreen', '');
+                        iframe.setAttribute('frameborder', '0');
+                        iframeContainer.appendChild(iframe);
+                        modalMediaContainer.appendChild(iframeContainer);
+                    } else if (type === 'image') {
+                        const imageUrl = item.dataset.imageUrl;
+                        const img = document.createElement('img');
+                        img.src = imageUrl;
+                        img.alt = title;
+                        modalMediaContainer.appendChild(img);
+                    }
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+
+            function closeModal() {
+                modal.style.display = 'none';
+                modalMediaContainer.innerHTML = ''; 
+                document.body.style.overflow = 'auto';
+            }
+
+            if (closeButton) {
+                closeButton.addEventListener('click', closeModal);
+            }
+
+            window.addEventListener('click', (event) => {
+                if (event.target == modal) {
+                    closeModal();
+                }
+            });
+            
+            window.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && modal.style.display === 'flex') {
+                    closeModal();
+                }
+            });
+            
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+        });
+    </script>
 </body>
 </html>
